@@ -36,37 +36,29 @@ describe('App.vue component', () => {
         expect(h1Element.text()).toStrictEqual('Daily Corona Cases in Turkey')
     })
     describe('notificationArea class check based on `getCount` value', () => {
-        it('getCount >= 10', () => {
-            const wrapper = mountComponent(10);
-            const notificationArea = wrapper.find('.notificationArea');
-            expect(notificationArea.attributes('class')).toContain('danger')
-        })
-        it('getCount >= 5 && getCount < 10', () => {
-            const wrapper = mountComponent(5);
-            const notificationArea = wrapper.find('.notificationArea');
-            expect(notificationArea.attributes('class')).toContain('normal')
-        })
-        it('getCount <5', () => {
-            const wrapper = mountComponent(0);
-            const notificationArea = wrapper.find('.notificationArea');
-            expect(notificationArea.attributes('class')).toContain('safe')
-        })
+
+        const statuses = [{ className: 'danger', count: 10 }, { className: 'normal', count: 5 }, { className: 'safe', count: 0 }]
+
+        for (let entry of statuses) {
+            it('getCount >= 10', () => {
+                const wrapper = mountComponent(entry.count);
+                const notificationArea = wrapper.find('.notificationArea');
+                expect(notificationArea.attributes('class')).toContain(entry.className)
+            })
+        }
     })
     describe('notificationArea text message check', () => {
-        it('getCount >= 10', () => {
-            const wrapper = mountComponent(10);
-            const notificationArea = wrapper.find('.notificationArea');
-            expect(notificationArea.text()).toStrictEqual('Danger!!! Case count is 10k')
-        })
-        it('getCount >= 5 && getCount < 10', () => {
-            const wrapper = mountComponent(5);
-            const notificationArea = wrapper.find('.notificationArea');
-            expect(notificationArea.text()).toStrictEqual('Life is normal. Case count is 5k')
-        })
-        it('notificationArea text message check', () => {
-            const wrapper = mountComponent(0);
-            const notificationArea = wrapper.find('.notificationArea');
-            expect(notificationArea.text()).toStrictEqual('So safe. Case count is 0k')
-        })
+        const statuses = [
+            { text: 'Danger!!! Case count is 10k', count: 10 },
+            { text: 'Life is normal. Case count is 5k', count: 5 },
+            { text: 'So safe. Case count is 0k', count: 0 }]
+
+        for (let entry of statuses) {
+            it('getCount >= 10', () => {
+                const wrapper = mountComponent(entry.count);
+                const notificationArea = wrapper.find('.notificationArea');
+                expect(notificationArea.text()).toStrictEqual(entry.text)
+            })
+        }
     })
 })
